@@ -18,6 +18,7 @@ const Responsive = ({ children, ...props }) => {
 };
 
 Responsive.propTypes = {
+    children: PropTypes.node.isRequired,
     min: PropTypes.string,
     max: PropTypes.string,
     minWidth: PropTypes.number,
@@ -25,8 +26,7 @@ Responsive.propTypes = {
     minHeight: PropTypes.number,
     maxHeight: PropTypes.number,
     isPortrait: PropTypes.bool,
-    isLandscape: PropTypes.bool,
-    children: PropTypes.node.isRequired
+    isLandscape: PropTypes.bool
 };
 
 /* --------------------------------------------------------------- */
@@ -63,21 +63,21 @@ ResponsiveProvider.propTypes = {
 
 /* --------------------------------------------------------------- */
 
-const XL = ({ children }) => children;
-const LG = ({ children }) => children;
-const MD = ({ children }) => children;
-const SM = ({ children }) => children;
 const XS = ({ children }) => children;
-
-/* --------------------------------------------------------------- */
-
-export default Responsive;
-export { ResponsiveProvider, XS, SM, MD, LG, XL };
+const SM = ({ children }) => children;
+const MD = ({ children }) => children;
+const LG = ({ children }) => children;
+const XL = ({ children }) => children;
 
 const SM_SIZE = 576;
 const MD_SIZE = 768;
 const LG_SIZE = 992;
 const XL_SIZE = 1200;
+
+export default Responsive;
+export { ResponsiveProvider, XS, SM, MD, LG, XL };
+
+/* --------------------------------------------------------------- */
 
 function isValid(width, height, { min, max, minWidth, maxWidth, minHeight, maxHeight, isPortrait, isLandscape }) {
     return (
@@ -97,22 +97,22 @@ function isValid(width, height, { min, max, minWidth, maxWidth, minHeight, maxHe
 
 function isMin(width, size) {
     switch (size) {
-        case "xl": return width >= XL_SIZE;
-        case "lg": return width >= LG_SIZE;
-        case "md": return width >= MD_SIZE;
-        case "sm": return width >= SM_SIZE;
         case "xs": return true;
+        case "sm": return width >= SM_SIZE;
+        case "md": return width >= MD_SIZE;
+        case "lg": return width >= LG_SIZE;
+        case "xl": return width >= XL_SIZE;
         default: return false;
     }
 }
 
 function isMax(width, size) {
     switch (size) {
-        case "xl": return true;
-        case "lg": return width < XL_SIZE;
-        case "md": return width < LG_SIZE;
-        case "sm": return width < MD_SIZE;
         case "xs": return width < SM_SIZE;
+        case "sm": return width < MD_SIZE;
+        case "md": return width < LG_SIZE;
+        case "lg": return width < XL_SIZE;
+        case "xl": return true;
         default: return false;
     }
 }
