@@ -1,110 +1,93 @@
-# OpenWebProject JsonSchemaForm
+# OpenWebProject ResponsiveReact
 
-**Json schema form for React**
+**Responsive layout for React**
 
-* Automatically creates React form from [Json Schema](https://json-schema.org)
-* Uses bootstrap 3 styles
+Based upon the size of the screen (or more specifically the browser window) do conditionally rendering. Makes it possible to have different layouts for different screen/window sizes.
 
 ## Installation
-`npm install owp.json-schema-form --save`
+`npm install owp.responsive-react --save`
+
+## Screen sizes
+I'm using the screen sizes as defined by [Bootstrap](https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints)
+
+* xs - Extra small devices (portrait phones, less than 576px)
+* sm - Small devices (landscape phones, 576px and up)
+* md - Medium devices (tablets, 768px and up)
+* lg - Large devices (desktops, 992px and up)
+* xl - Extra large devices (large desktops, 1200px and up)
 
 ## Usage
+First add the provider at the top of your application.
 ```javascript
-import JsonSchemaForm from "owp.json-schema-form";
+import { ResponsiveProvider } from "owp.responsive-react";
 
-const schema = {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "definitions": {
-        "optionalString": {
-            "type": "string, null",
-            "title": "Optional string"
-        }
-    },
-    "type": "object",
-    "additionalProperties": false,
-    "required": [
-        "requiredString",
-    ],
-    "properties": {
-        "requiredString": {
-            "type": "string",
-            "title": "Required string",
-            "description": "This string is required"
-        },
-        "OptionalNumber": {
-            "type": "number, null",
-            "title": "Optional number",
-        },
-        "requiredInt": {
-            "type": "integer",
-            "title": "Required int",
-            "description": "This int is required",
-            "minimum": -2
-        },
-        "OptionalBool": {
-            "type": "boolean, null",
-            "title": "Optional bool",
-            "description": "This bool is optional"
-        },
-        "optionalEnum": {
-            "enum": [
-                null, "a", "b", "c"
-            ],
-            "description": "This enum is optional",
-        },
-        "enumDesc": {
-            "oneOf": [
-                {
-                    "const": null,
-                    "title": "No value",
-                    "description": "No value is used"
-                },
-                {
-                    "const": "a",
-                    "title": "A",
-                    "description": "Value A is used"
-                },
-                {
-                    "const": "b",
-                    "title": "B",
-                    "description": "Value B is used"
-                },
-                {
-                    "const": "c",
-                    "title": "C",
-                    "description": "Value C is used"
-                }
-            ],
-            "title": "Descriptive enum num",
-            "description": "This enum has titles and descriptions",
-        },
-        "requiredObject": {
-            "type": "object",
-            "title": "Required object",
-            "description": "This object is required",
-            "properties": {
-                "value": {
-                    "type": "string, null",
-                }
-            }
-        },
-        "requiredArray": {
-            "type": "array",
-            "title": "Required array",
-            "minItems": 1,
-            "items": {
-                "type": "string"
-            }
-        }
-    }
-};
-const model = {
-    requiredArray: null
-};
+ReactDOM.render(
+    <ResponsiveProvider>
+        <App />
+    </ResponsiveProvider>,
+    document.getElementById("root")
+);
+```
 
-const texts = {
-    boolYes: "Okay"
-};
+Conditional render based upon screen/window size.
+```javascript
+import Responsive, { XS, SM, MD, LG, XL } from "owp.responsive-react";
 
-<JsonSchemaForm schema={schema} model={model} texts={texts} />
+//Render div if screen/window size is md(Medium) or larger.
+<Responsive min="md">
+    <div>min md</div>
+</Responsive>
+
+//Render div if screen/window size is md(Medium) or smaller.
+<Responsive max="md">
+    <div>max md</div>
+</Responsive>
+
+//Render div if screen/window width is 500px or more.
+<Responsive minWidth={500}>
+    <div>minWidth 500</div>
+</Responsive>
+
+//Render div if screen/window width is 500px or less.
+<Responsive maxWidth={500}>
+    <div>maxWidth 500</div>
+</Responsive>
+
+//Render div if screen/window height is 300px or more.
+<Responsive minHeight={300}>
+    <div>minHeight 300</div>
+</Responsive>
+
+//Render div if screen/window height is 300px or less.
+<Responsive maxHeight={300}>
+    <div>maxHeight 300</div>
+</Responsive>
+
+//Render div if screen/window is in portrait mode(height >= width).
+<Responsive isPortrait={true}>
+    <div>isPortrait</div>
+</Responsive>
+
+//Render div if screen/window is in landscape mode(height < width).
+<Responsive isLandscape={true}>
+    <div>isLandscape</div>
+</Responsive>
+
+//Render best matching layout based upon screen/window size.
+<Responsive>
+    <XS><div>Extra small</div></XS>
+    <SM><div>Small</div></SM>
+    <MD><div>Medium</div></MD>
+    <LG><div>Large</div></LG>
+    <XL><div>Extra large</div></XL>
+</Responsive>
+
+//Can be combined with a condition. Will render the best match, but only in portrait mode.
+<Responsive isPortrait={true}>
+    <XS><div>Extra small</div></XS>
+    <SM><div>Small</div></SM>
+    <MD><div>Medium</div></MD>
+    <LG><div>Large</div></LG>
+    <XL><div>Extra large</div></XL>
+</Responsive>
 ```
