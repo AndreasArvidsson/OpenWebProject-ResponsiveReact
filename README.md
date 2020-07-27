@@ -17,8 +17,8 @@ I'm using the screen sizes as defined by [Bootstrap](https://getbootstrap.com/do
 * xl - Extra large devices (large desktops, 1200px and up)
 
 ## Usage
-First add the provider at the top of your application.
-```javascript
+Add the provider at the top of your application.
+```jsx
 import { ResponsiveProvider } from "owp.responsive-react";
 
 ReactDOM.render(
@@ -30,7 +30,7 @@ ReactDOM.render(
 ```
 
 Conditional render based upon screen/window size.
-```javascript
+```jsx
 import Responsive, { XS, SM, MD, LG, XL } from "owp.responsive-react";
 
 //Render div if screen/window size is md(Medium) or larger.
