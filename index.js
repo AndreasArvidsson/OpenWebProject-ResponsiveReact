@@ -72,12 +72,12 @@ const XS = ({ children }) => children;
 /* --------------------------------------------------------------- */
 
 export default Responsive;
-export { ResponsiveProvider, XL, LG, MD, SM, XS };
+export { ResponsiveProvider, XS, SM, MD, LG, XL };
 
-const XL_SIZE = 1200;
-const LG_SIZE = 992;
-const MD_SIZE = 768;
 const SM_SIZE = 576;
+const MD_SIZE = 768;
+const LG_SIZE = 992;
+const XL_SIZE = 1200;
 
 function isValid(width, height, { min, max, minWidth, maxWidth, minHeight, maxHeight, isPortrait, isLandscape }) {
     return (
@@ -121,11 +121,11 @@ function renderChildren(width, children) {
     const map = {};
     children.forEach(c => {
         switch (c.type) {
-            case XL:
-            case LG:
-            case MD:
+            case XS:
             case SM:
-            case XS: {
+            case MD:
+            case LG:
+            case XL: {
                 const field = c.type.name.toLowerCase();
                 if (map[field]) {
                     throw Error("Duplicate child tag child <" + c.type.name + "> in <Responsive>. Each tag must be unique.");
@@ -134,7 +134,7 @@ function renderChildren(width, children) {
                 break;
             }
             default:
-                throw Error("Invalid child '" + c.type + "' in <Responsive>. Expected: <XL>, <LG>, <MD>, <SM>, <XS>.");
+                throw Error("Invalid child '" + c.type + "' in <Responsive>. Expected: <XS>, <SM>, <MD>, <LG>, <XL>.");
         }
     });
     return renderResponsive(width, map);
